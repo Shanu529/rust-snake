@@ -18,7 +18,12 @@ enum Direction {
     Right,
 }
 
-fn draw_board(snake_row: i32, snake_col: i32) {
+fn draw_board(
+    snake_row: i32,
+    snake_col: i32,
+    apple_row: i32,
+    apple_col: i32,
+) {
     let mut stdout = io::stdout();
 
     execute!(stdout, MoveTo(0, 0), Clear(ClearType::All)).unwrap();
@@ -31,6 +36,8 @@ fn draw_board(snake_row: i32, snake_col: i32) {
                 print!("#");
             } else if row == snake_row && column == snake_col {
                 print!(">");
+            } else if row == apple_row && column == apple_col {
+                print!("🍎");
             } else {
                 print!(" ");
             }
@@ -45,15 +52,29 @@ fn draw_board(snake_row: i32, snake_col: i32) {
 fn main() {
     let mut stdout = io::stdout();
 
-    execute!(stdout, EnterAlternateScreen, Clear(ClearType::All), Hide).unwrap();
+    execute!(
+        stdout,
+        EnterAlternateScreen,
+        Clear(ClearType::All),
+        Hide
+    )
+    .unwrap();
 
     let mut snake_row = 3;
     let mut snake_col = 1;
 
+    let apple_row = 3;
+    let apple_col = 10;
+
     let mut direction = Direction::Right;
 
     loop {
-        draw_board(snake_row, snake_col);
+        draw_board(
+            snake_row,
+            snake_col,
+            apple_row,
+            apple_col,
+        );
 
         // Check keyboard input
         if event::poll(Duration::from_millis(100)).unwrap() {
@@ -87,7 +108,12 @@ fn main() {
             }
         }
 
-        if snake_col == 0 || snake_col == 20 || snake_row == 0 || snake_row == 9 {
+        // Check if snake hits wall
+        if snake_col == 0
+            || snake_col == 20
+            || snake_row == 0
+            || snake_row == 9
+        {
             break;
         }
 
