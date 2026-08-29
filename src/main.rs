@@ -108,6 +108,10 @@ fn main() {
             }
         }
 
+        if snake_row == apple_row && snake_col == apple_col {
+            println!("Apple eaten!");
+        }
+
         // Check if snake hits wall
         if snake_col == 0
             || snake_col == 20
