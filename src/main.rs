@@ -3,7 +3,7 @@ use std::{
     thread,
     time::Duration,
 };
-
+use rand::Rng;
 use crossterm::{
     cursor::{Hide, MoveTo, Show},
     event::{self, Event, KeyCode},
@@ -63,8 +63,12 @@ fn main() {
     let mut snake_row = 3;
     let mut snake_col = 1;
 
-    let apple_row = 3;
-    let apple_col = 10;
+    let mut rng = rand::rng();
+
+   let mut apple_row = 3;
+   let mut apple_col = 10;
+
+   
 
     let mut direction = Direction::Right;
 
@@ -108,8 +112,9 @@ fn main() {
             }
         }
 
-        if snake_row == apple_row && snake_col == apple_col {
-            println!("Apple eaten!");
+       if snake_row == apple_row && snake_col == apple_col {
+            apple_row = rng.random_range(1..9);
+            apple_col = rng.random_range(1..20);
         }
 
         // Check if snake hits wall
